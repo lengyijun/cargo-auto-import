@@ -10,9 +10,20 @@ cargo install --path .
 ```
 
 ## How to use
+
+if you meet 
+```
+help: consider importing this function
+     |
+1    + use crate::openbsd_compat::bsd_closefrom::closefrom;
+     |
+```
+
+You can type this to apply the suggestions
 ```
 cargo auto-import
 ```
+
 
 ## Similar project
 https://github.com/m-ou-se/auto-import
