@@ -30,7 +30,7 @@ fn main() -> Result<(), std::io::Error> {
                     .unwrap_or_default();
                 let mut pf = PathBuf::from(d["manifest_path"].as_str().unwrap());
                 pf.pop();
-                pf.push(c["spans"][0]["file_name"].as_str().unwrap());
+                pf.push(c["spans"][0]["file_name"].as_str().unwrap_or_default());
                 if suggestion.starts_with("use ") {
                     match mp.get_mut(&pf) {
                         Some(x) => {
