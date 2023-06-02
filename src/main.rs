@@ -25,12 +25,23 @@ fn main() -> Result<(), std::io::Error> {
     {
         if let Ok(d) = json::parse(line) {
             for c in d["message"]["children"].members() {
+                let pf = match (
+                    d["manifest_path"].as_str(),
+                    c["spans"][0]["file_name"].as_str(),
+                ) {
+                    (Some(x), Some(y)) => {
+                        let mut pf = PathBuf::from(x);
+                        pf.pop();
+                        pf.push(y);
+                        pf
+                    }
+                    _ => {
+                        continue;
+                    }
+                };
                 let suggestion = c["spans"][0]["suggested_replacement"]
                     .as_str()
                     .unwrap_or_default();
-                let mut pf = PathBuf::from(d["manifest_path"].as_str().unwrap());
-                pf.pop();
-                pf.push(c["spans"][0]["file_name"].as_str().unwrap());
                 if suggestion.starts_with("use ") {
                     match mp.get_mut(&pf) {
                         Some(x) => {
